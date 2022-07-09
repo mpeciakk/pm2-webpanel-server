@@ -1,25 +1,31 @@
-import { Controller, Get, Param } from '@nestjs/common'
+import { Controller, Get, Param, UseGuards } from '@nestjs/common'
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
+import { PermissionGuard } from 'src/auth/permission.guard'
 import { HostsService } from './hosts.service'
 
 @Controller('hosts')
 export class HostsController {
     constructor(private readonly hostsService: HostsService) {}
 
+    @UseGuards(JwtAuthGuard, PermissionGuard)
     @Get('/')
     async getAll() {
         return this.hostsService.getAll()
     }
 
+    @UseGuards(JwtAuthGuard, PermissionGuard)
     @Get('/:name')
     async getHost(@Param('name') name: string) {
         return this.hostsService.get(name)
     }
 
+    @UseGuards(JwtAuthGuard, PermissionGuard)
     @Get('/:name/processes')
     async getProcesses(@Param('name') name: string) {
         return this.hostsService.getProcesses(name)
     }
 
+    @UseGuards(JwtAuthGuard, PermissionGuard)
     @Get('/:name/stats')
     getStats(@Param('name') name: string) {
         return this.hostsService.getStats(name)
