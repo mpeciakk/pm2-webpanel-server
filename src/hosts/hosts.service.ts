@@ -57,8 +57,6 @@ export class HostsService {
     async getStats(name: string) {
         const host = await this.get(name)
 
-        console.log(host)
-
         const response = await this.httpService.axiosRef.get(
             `${host.url}stats`,
             {
@@ -69,5 +67,27 @@ export class HostsService {
         )
 
         return response.data as HostStatistics
+    }
+
+    async deleteHost(id: number) {
+        this.prisma.host
+            .delete({
+                where: {
+                    id,
+                },
+            })
+            .catch(console.error)
+    }
+
+    async addHost(name: string, url: string, secret: string) {
+        this.prisma.host
+            .create({
+                data: {
+                    name,
+                    url,
+                    secret,
+                },
+            })
+            .then((host) => console.log(host))
     }
 }

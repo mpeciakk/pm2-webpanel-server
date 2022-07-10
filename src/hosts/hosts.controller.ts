@@ -1,6 +1,16 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common'
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    UseGuards,
+} from '@nestjs/common'
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
 import { PermissionGuard } from 'src/auth/permission.guard'
+import { AddHostDto } from './add-host.dto'
+import { DeleteHostDto } from './delete-host.dto'
 import { HostsService } from './hosts.service'
 
 @Controller('hosts')
@@ -27,7 +37,23 @@ export class HostsController {
 
     @UseGuards(JwtAuthGuard, PermissionGuard)
     @Get('/:name/stats')
-    getStats(@Param('name') name: string) {
+    async getStats(@Param('name') name: string) {
         return this.hostsService.getStats(name)
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('/add')
+    async addHost(@Body() addHostDto: AddHostDto) {
+        return this.hostsService.addHost(
+            addHostDto.name,
+            addHostDto.url,
+            addHostDto.secret,
+        )
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Delete('/delete')
+    async deleteHost(@Body() deleteHostDto: DeleteHostDto) {
+        return this.hostsService.deleteHost(deleteHostDto.id)
     }
 }
