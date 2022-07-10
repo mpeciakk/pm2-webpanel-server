@@ -7,10 +7,10 @@ import {
     Post,
     UseGuards,
 } from '@nestjs/common'
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
-import { PermissionGuard } from 'src/auth/permission.guard'
-import { AddHostDto } from './add-host.dto'
-import { DeleteHostDto } from './delete-host.dto'
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard'
+import { PermissionGuard } from 'src/auth/guard/permission.guard'
+import { AddHostDto } from './dto/add-host.dto'
+import { DeleteHostDto } from './dto/delete-host.dto'
 import { HostsService } from './hosts.service'
 
 @Controller('hosts')
